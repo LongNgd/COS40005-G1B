@@ -1,1 +1,1 @@
-"# COS40005-G1B" 
+COS40005-Group 1B

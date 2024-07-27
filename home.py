@@ -141,11 +141,11 @@ video_config_label = tk.Label(video_config_frame, text="VIDEO CONFIGURATION", bg
 video_config_label.place(relx=0.5, rely=0.05, anchor='n')
 
 # Video canvas
-video_canvas = tk.Canvas(video_config_frame, width=620, height=200, bg="lightgrey", bd=2, highlightthickness=1, highlightbackground="black")
+video_canvas = tk.Canvas(video_config_frame, width=620, height=200, bg="black", bd=2, highlightthickness=1, highlightbackground="black")
 video_canvas.place(relx=0.5, y=140, anchor='n')
 
 # Create a label to display video frames
-video_label = tk.Label(video_canvas, bg="lightgrey")
+video_label = tk.Label(video_canvas, bg="black")
 video_label.place(relx=0.5, rely=0.5, anchor='center')
 
 # Homography canvas

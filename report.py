@@ -37,14 +37,14 @@ def update_frame():
             cap.release()
 
 def generate_report():
-    pdf_path = os.path.abspath('./COS40005-G1B/Report-Design.pdf')
+    pdf_path = os.path.abspath('./Report-Design.pdf')
     if os.path.isfile(pdf_path):
         webbrowser.open_new(f'file://{pdf_path}')
     else:
         messagebox.showerror("Error", f"File not found: {pdf_path}")
 
 def display_heatmap():
-    heatmap_path = './COS40005-G1B/heatmap.png'
+    heatmap_path = './heatmap.png'
     if os.path.isfile(heatmap_path):
         heatmap_img = Image.open(heatmap_path)
         heatmap_img = heatmap_img.resize((heatmap_canvas.winfo_width(), heatmap_canvas.winfo_height()))

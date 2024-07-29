@@ -88,7 +88,7 @@ def clear_all():
 # Function to open report.py
 def open_report():
     if video_path:
-        subprocess.run(["python", "./COS40005-G1B/report.py", video_path])
+        subprocess.run(["python", "./report.py", video_path])
 
 # Function to update the state of the Execute button
 def update_execute_button_state():

@@ -2,7 +2,8 @@ import tkinter as tk
 from tkinter import font, filedialog
 import cv2
 from PIL import Image, ImageTk
-import subprocess  # Import the subprocess module
+import subprocess
+import os
 
 # Initialize the main application window
 app = tk.Tk()
@@ -19,14 +20,13 @@ video_path = None
 cap = None
 video_canvas = None
 video_label = None
-video_playing = False  # Track whether the video is currently playing
+video_playing = False
 
 # Function to upload a video
 def upload_video():
     global video_path, video_label
     video_path = filedialog.askopenfilename(filetypes=[("Video Files", "*.mp4 *.avi *.mov")])
     if video_path:
-        # Update the canvas with the selected video file path
         video_upload_canvas.delete("all")
         video_upload_canvas.create_text(150, 85, text=f"Selected video:\n{video_path}", fill="black", anchor="center", width=280)
         print(f"Selected video: {video_path}")
@@ -36,7 +36,6 @@ def upload_video():
 def upload_JSON():
     file_path = filedialog.askopenfilename(filetypes=[("JSON files", "*.json")])
     if file_path:
-        # Update the canvas with the selected JSON file path
         JSON_upload_canvas.delete("all")
         JSON_upload_canvas.create_text(150, 85, text=f"Selected JSON:\n{file_path}", fill="black", anchor="center", width=280)
         print(f"Selected JSON: {file_path}")
@@ -57,7 +56,6 @@ def update_frame():
     if cap:
         ret, frame = cap.read()
         if ret:
-            # Resize the frame to match the canvas height while preserving aspect ratio
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame_height, frame_width, _ = frame.shape
             new_width = int(video_canvas.winfo_height() * frame_width / frame_height)
@@ -66,11 +64,8 @@ def update_frame():
             img = Image.fromarray(frame)
             imgtk = ImageTk.PhotoImage(image=img)
 
-            # Update the image in the label
             video_label.imgtk = imgtk
             video_label.config(image=imgtk)
-            
-            # Schedule the next frame update
             video_label.after(10, update_frame)
         else:
             cap.release()
@@ -81,7 +76,6 @@ def update_frame():
 def clear_all():
     global cap, video_label, video_playing
 
-    # Release the video capture object and clear the video canvas
     if cap:
         cap.release()
         cap = None
@@ -89,13 +83,12 @@ def clear_all():
     video_label.config(image='')
     video_playing = False
     update_execute_button_state()
-
-    # Clear text in the video upload canvas
     video_upload_canvas.delete("all")
 
 # Function to open report.py
 def open_report():
-    subprocess.run(["python", "./COS40005-G1B/report.py"])
+    if video_path:
+        subprocess.run(["python", "./COS40005-G1B/report.py", video_path])
 
 # Function to update the state of the Execute button
 def update_execute_button_state():
@@ -104,7 +97,7 @@ def update_execute_button_state():
     else:
         execute_button.config(state=tk.DISABLED)
 
-# 1. Main Settings
+# Main Settings
 main_settings_frame = tk.Frame(app, width=333, height=750, bg="lightgray")
 main_settings_frame.pack(side="left", fill="y")
 main_settings_label = tk.Label(main_settings_frame, text="MAIN SETTINGS", bg="lightgray", font=heading_font)
@@ -134,7 +127,7 @@ upload_button.place(relx=1.0, rely=1.0, x=-120, y=-20, anchor='se')
 clear_button = tk.Button(main_settings_frame, width=10, text="Clear", command=clear_all)
 clear_button.place(relx=1.0, rely=1.0, x=-20, y=-20, anchor='se')
 
-# 2. Video Configuration
+# Video Configuration
 video_config_frame = tk.Frame(app, width=667, height=750, bg="white")
 video_config_frame.pack(side="right", fill="both", expand=True)
 video_config_label = tk.Label(video_config_frame, text="VIDEO CONFIGURATION", bg="white", font=heading_font)
@@ -176,8 +169,8 @@ assume_config_canvas.place(relx=0.5, y=525, anchor='n')
 assume_config_canvas.create_text(300, 90, text="ASSUME CONFIGURATION SECTIONS", fill="black")
 
 # Create the Execute button at the bottom right
-execute_button = tk.Button(video_config_frame, width=10, text="Execute", command=open_report, state=tk.DISABLED)  # Initially disabled
+execute_button = tk.Button(video_config_frame, width=10, text="Execute", command=open_report, state=tk.DISABLED)
 execute_button.place(relx=1.0, rely=1.0, x=-20, y=-20, anchor='se')
 
-# Run the application
+# Run the application5
 app.mainloop()

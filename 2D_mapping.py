@@ -26,11 +26,24 @@ for person in frame_data:
 # Display the image with person positions and center points
 cv2.imshow('Person Positions with Center Points', image)
 
-tl = (302, 102)
+tl = (340, 110)
 bl = (23, 208)
 tr = (600, 170)
-br = (325, 360)
-extra = ()
+br_bl = (100, 360)
+br_tr = (640, 360)
+
+# Vector 1: bl + br_bl
+vector1 = (br_bl[0] - bl[0], br_bl[1] - bl[1])
+
+# Vector 2: tr + br_tr
+vector2 = (br_tr[0] - tr[0], br_tr[1] - tr[1])
+
+# Calculate the intersection point
+det = vector1[0] * vector2[1] - vector1[1] * vector2[0]
+
+t = ((tr[0] - bl[0]) * vector2[1] - (tr[1] - bl[1]) * vector2[0]) / det
+br = (int(bl[0] + t * vector1[0]), int(bl[1] + t * vector1[1]))
+# print("Intersection Point:", br)
 
 cv2.circle(image, tl, 5, (0, 0, 255), cv2.FILLED)
 cv2.circle(image, bl, 5, (0, 0, 255), cv2.FILLED)
